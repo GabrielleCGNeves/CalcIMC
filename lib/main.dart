@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:js_interop';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -77,13 +78,75 @@ class _MyAppState extends State<MyApp> {
           title: const Text("Calcula IMC"),
           centerTitle: true,
           backgroundColor: Colors.green,
-          actions: <Widget> [IconButton(onPressed: _resetFields, icon: const Icon(Icons.refresh))],
+          actions: <Widget> [
+            IconButton(onPressed: _resetFields, icon: const Icon(Icons.refresh))
+          ],
         ),
         backgroundColor: Colors.white,
-        body: SingleChildScrollView(padding: const EdgeInsets.from TRB(10, 0, 10, 0),
-        child: Form(key: _formKey, child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, 
-        children: <widget>[const Icon(Icons.person_2_outlined, size: 120,color: Colors.green)]),),),
-      )
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+          child: Form(
+            key: _formKey, 
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch, 
+              children: <Widget>[
+                const Icon(Icons.person_2_outlined, 
+                size: 120,
+                color: Colors.green),
+                TextFormField(
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    labelText: "Peso (KG)",
+                    labelStyle: TextStyle(color: Colors.green),
+                  ),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.green, fontSize: 25.0),
+                  controller: pesoController,
+                  validator: (value){
+                    if(value!.isEmpty){
+                      return 'Insira seu peso!';
+                    }
+                    return null;
+                  }
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    labelText: "Altura (CM)",
+                    labelStyle: TextStyle(color: Colors.green),
+                  ),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.green, fontSize: 25.0),
+                  controller: alturaController,
+                  validator: (value){
+                    if(value!.isEmpty){
+                      return 'Insira sua Altura!';
+                    }
+                    return null;
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                  child: ElevatedButton(
+                    onPressed: (){
+                      if(_formKey.currentState!.validate()){
+                        _calcular();
+                      }
+                    },
+                    child: const Text(
+                      'Calcular',
+                      style: TextStyle(color: Colors.green, fontSize: 25.0),
+                  )),
+                  ),
+                  Text(
+                    
+                    _info,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.green, fontSize:  25.0),
+                    )             
+                ],
+                )),
+              ),
+      ),
     );
-  }
-}
+  }}
